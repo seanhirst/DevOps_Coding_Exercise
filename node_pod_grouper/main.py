@@ -4,23 +4,22 @@ from fastapi.responses import JSONResponse
 from node_pod_grouper import NodePodGrouperService
 
 app = FastAPI()
-
 service = NodePodGrouperService()  # Instantiate the service class
 
 @app.get("/nodes")
-async def nodes():
-    """Endpoint to get a dictionary mapping node names to lists of pods."""
+async def get_nodes():
+    """Endpoint to get a dictionary mapping node names to lists of pod details."""
     try:
-        content = jsonable_encoder(service.get_nodes())
-        return JSONResponse(content=content)
+        node_pod_map = service.get_nodes()
+        return JSONResponse(content=jsonable_encoder(node_pod_map))
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
 
-@app.get("/nodes/{name}")
-async def node(name: str):
-    """Endpoint to get a list of pods running on the specified node."""
+@app.get("/nodes/{node_name}")
+async def get_node(node_name: str):
+    """Endpoint to get a list of pod details running on the specified node."""
     try:
-        content = jsonable_encoder(service.get_node(name))
-        return JSONResponse(content=content)
+        pods = service.get_node(node_name)
+        return JSONResponse(content=jsonable_encoder(pods))
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
