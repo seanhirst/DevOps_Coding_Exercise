@@ -1,19 +1,24 @@
 from kubernetes import client, config
 from kubernetes.client.rest import ApiException
 from typing import Dict, List
-import os 
+import os
+import yaml
 
 class NodePodGrouperService:
     def __init__(self):
         """Initializes the connection to the Kubernetes API."""
+        # Get the kubeconfig content from the environment variable.
+        kube_config_content = os.environ.get('KUBECONFIG')
 
-        # Get the kubeconfig file path from the environment variable.
-        kube_config_path = os.environ.get('KUBECONFIG', '~/.kube/config')
+        if kube_config_content:
+            try:
+                kube_config = yaml.safe_load(kube_config_content)
+                config.load_kube_config_from_dict(kube_config)
+            except yaml.YAMLError as e:
+                raise Exception(f"Error parsing kubeconfig from environment variable: {e}")
+        else:
+            raise Exception("KUBECONFIG environment variable not set or empty.")
 
-        try:
-            config.load_kube_config(config_file=kube_config_path)
-        except config.config_exception.ConfigException:
-            raise Exception("Could not load Kubernetes configuration from {}".format(kube_config_path))
         self.core_api = client.CoreV1Api()
 
     def get_node(self, node_name: str) -> List[Dict]:
