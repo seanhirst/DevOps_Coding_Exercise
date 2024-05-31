@@ -23,7 +23,7 @@ COPY requirements.txt node_pod_grouper/__init__.py node_pod_grouper/main.py node
 RUN pip install --upgrade pip
 
 # Install Python dependencies
-RUN pip install -r requirements.txt --no-cache-dir
+RUN pip install -r node_pod_grouper/requirements.txt --no-cache-dir
 
 # Install Gunicorn (the WSGI server)
 RUN pip install gunicorn
