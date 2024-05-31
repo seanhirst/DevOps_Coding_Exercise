@@ -16,8 +16,8 @@ WORKDIR /app
 # Make a node_pod_grouper directory
 RUN mkdir /app/node_pod_grouper
 
-# Copy the files into the created directory 
-COPY requirements.txt node_pod_grouper/__init__.py node_pod_grouper/main.py node_pod_grouper/node_pod_grouper.py /app/node_pod_grouper/
+# Copy the files into the created directory (Note the updated path to requirements.txt)
+COPY node_pod_grouper/requirements.txt node_pod_grouper/__init__.py node_pod_grouper/main.py node_pod_grouper/node_pod_grouper.py /app/node_pod_grouper/
 
 # Upgrade pip first to ensure latest version
 RUN pip install --upgrade pip
