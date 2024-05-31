@@ -34,5 +34,9 @@ RUN pip install gunicorn
 # Expose the port on which the application will listen
 EXPOSE 8080
 
+# Pass the KUBECONFIG variable directly from the host
+ARG KUBECONFIG
+ENV KUBECONFIG=$KUBECONFIG
+
 # Command to start the Gunicorn server with Uvicorn workers, specifying the module path
 CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8080", "node_pod_grouper.main:app"]
