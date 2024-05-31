@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-pod-grouper
+spec:
+  replicas: 3  # Adjust for desired redundancy
+  selector:
+    matchLabels:
+      app: node-pod-grouper
+  template:
+    metadata:
+      labels:
+        app: node-pod-grouper
+    spec:
+      containers:
+        - name: node-pod-grouper
+          image: my-pod-grouper:latest  # Replace with your Docker image
+          ports:
+            - containerPort: 8080
+          livenessProbe:  # Health check
+            httpGet:
+              path: /nodes
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
