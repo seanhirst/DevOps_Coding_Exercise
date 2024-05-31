@@ -23,7 +23,7 @@ class NodePodGrouperService:
             pods = self.core_api.list_pod_for_all_namespaces(field_selector=field_selector).items
             return [{"name": pod.metadata.name, "namespace": pod.metadata.namespace} for pod in pods]
         except ApiException as e:
-            raise Exception(f"Error retrieving pods for node '{node_name}': {e.status} {e.reason}")  # More informative error message
+            raise Exception(f"Error retrieving pods for node '{node_name}': {e.status} {e.reason}")  
 
     def get_nodes(self) -> Dict[str, List[Dict]]:
         """Returns a dictionary mapping node names to lists of pod details on those nodes."""
