@@ -14,12 +14,37 @@ spec:
     spec:
       containers:
         - name: node-pod-grouper
-          image: my-pod-grouper:latest  # Replace with your Docker image
+          image: my-pod-grouper:latest  
           ports:
             - containerPort: 8080
-          livenessProbe:  # Health check
+          resources:             # Resource requests/limits
+            requests:
+              cpu: 100m        # 100 milliCPU (0.1 CPU)
+              memory: 128Mi    # 128 mebibytes (128 MB)
+            limits:
+              cpu: 250m       # 250 milliCPU (0.25 CPU)
+              memory: 256Mi   # 256 mebibytes (256 MB)
+          livenessProbe:        # Health check
             httpGet:
               path: /nodes
               port: 8080
-            initialDelaySeconds: 10
+            initialDelaySeconds: 15
             periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:      # Readiness check
+            httpGet:
+              path: /nodes
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          securityContext:     # Security
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+      imagePullSecrets:       # Private registry authentication (if needed)
+        - name: my-registry-secret 
