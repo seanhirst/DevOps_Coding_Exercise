@@ -34,7 +34,7 @@ RUN pip install gunicorn
 # Expose the port on which the application will listen
 EXPOSE 8080
 
-# Pass the KUBECONFIG variable directly from the host
+# Pass the KUBECONFIG variable directly from the host using the --build-arg flag
 ARG KUBECONFIG
 ENV KUBECONFIG=$KUBECONFIG
 
