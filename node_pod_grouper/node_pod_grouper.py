@@ -1,15 +1,19 @@
 from kubernetes import client, config
 from kubernetes.client.rest import ApiException
 from typing import Dict, List
+import os 
 
 class NodePodGrouperService:
     def __init__(self):
         """Initializes the connection to the Kubernetes API."""
-        try:
-            config.load_incluster_config()  # Prefer in-cluster config for production
-        except config.config_exception.ConfigException:
-            config.load_kube_config()  # Fallback for local development
 
+        # Get the kubeconfig file path from the environment variable.
+        kube_config_path = os.environ.get('KUBECONFIG', '~/.kube/config')
+
+        try:
+            config.load_kube_config(config_file=kube_config_path)
+        except config.config_exception.ConfigException:
+            raise Exception("Could not load Kubernetes configuration from {}".format(kube_config_path))
         self.core_api = client.CoreV1Api()
 
     def get_node(self, node_name: str) -> List[Dict]:
