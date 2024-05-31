@@ -17,6 +17,9 @@ spec:
           image: my-pod-grouper:latest  
           ports:
             - containerPort: 8080
+          env:             # Environment variable for kubeconfig path
+            - name: KUBECONFIG
+              value: "/path/to/your/kubeconfig"  # Replace with the actual path
           resources:             # Resource requests/limits
             requests:
               cpu: 100m        # 100 milliCPU (0.1 CPU)
