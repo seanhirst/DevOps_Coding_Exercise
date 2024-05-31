@@ -1,6 +1,9 @@
 # Use a lightweight base image with Python 3 and Alpine Linux
 FROM python:3-alpine3.11
 
+# Install build dependencies including Rust and cargo. 
+RUN apk add --no-cache build-base musl-dev rust cargo
+
 # Set the working directory within the container 
 WORKDIR /app
 
@@ -8,7 +11,7 @@ WORKDIR /app
 COPY requirements.txt ./
 
 # Install Python dependencies
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt --no-cache-dir
 
 # Install Gunicorn (the WSGI server)
 RUN pip install gunicorn
