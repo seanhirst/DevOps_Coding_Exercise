@@ -2,13 +2,22 @@
 FROM python:3-alpine3.11
 
 # Install build dependencies including Rust and cargo. 
-RUN apk add --no-cache build-base musl-dev rust cargo
+RUN apk add --no-cache build-base musl-dev
+
+# Update Rust to ensure compatibility
+# Install rustup (the Rust toolchain installer)
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+# Add Cargo's bin directory to PATH (replace /root/.cargo/bin with the actual path if it's different)
+ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Set the working directory within the container 
 WORKDIR /app
 
 # Copy only the necessary files (requirements.txt) to take advantage of Docker layer caching
 COPY requirements.txt ./
+
+# Upgrade pip first to ensure latest version
+RUN pip install --upgrade pip
 
 # Install Python dependencies
 RUN pip install -r requirements.txt --no-cache-dir
