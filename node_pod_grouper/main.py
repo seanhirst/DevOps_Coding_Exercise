@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from node_pod_grouper.node_pod_grouper import NodePodGrouperService  # Corrected import
+from node_pod_grouper.node_pod_grouper import NodePodGrouperService
 
 app = FastAPI()
 service = NodePodGrouperService()
