@@ -1,8 +1,11 @@
 # Use a lightweight base image with Python 3 and Alpine Linux
 FROM python:3-alpine3.11
 
-# Install build dependencies including Rust and cargo. 
-RUN apk add --no-cache build-base musl-dev
+# Install kubectl and other necessary packages.
+RUN apk add --no-cache curl bash
+RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
+    && chmod +x ./kubectl \
+    && mv ./kubectl /usr/local/bin/kubectl
 
 # Update Rust to ensure compatibility
 # Install rustup (the Rust toolchain installer)
