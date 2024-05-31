@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from node_pod_grouper import NodePodGrouperService
+from node_pod_grouper.node_pod_grouper import NodePodGrouperService  # Corrected import
 
 app = FastAPI()
-service = NodePodGrouperService()  # Instantiate the service class
+service = NodePodGrouperService()
 
 @app.get("/nodes")
 async def get_nodes():
